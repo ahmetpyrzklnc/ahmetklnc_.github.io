@@ -1,0 +1,427 @@
+/*!
+ * Start Bootstrap - Resume v5.0.1 (https://startbootstrap.com/template-overviews/resume)
+ * Copyright 2013-2018 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-resume/blob/master/LICENSE)
+}
+ */
+body {
+  font-family: Muli, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  padding-top: 54px;
+  color: #a8b2c1;
+  background-color: #0a0a0a;
+}
+@media (min-width: 992px) {
+  body {
+    padding-top: 0;
+    padding-left: 17rem;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Saira Extra Condensed", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #e0e0e0;
+}
+h1 {
+  font-size: 6rem;
+  line-height: 5.5rem;
+}
+h2 {
+  font-size: 3.5rem;
+}
+h3 {
+  font-size: 2rem;
+}
+p.lead {
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+.subheading {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-family: "Saira Extra Condensed", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.5rem;
+  color: #a8b2c1;
+}
+.social-icons a {
+  display: inline-block;
+  height: 3.5rem;
+  width: 3.5rem;
+  background-color: #FFB800;
+  color: #121212 !important;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 3.5rem;
+  margin-right: 1rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: none;
+  border: none;
+}
+.social-icons a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000000;
+  border-radius: 100%;
+  transform: scale(1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  opacity: 0;
+}
+.social-icons a i {
+  position: relative;
+  z-index: 2;
+  transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.social-icons a:hover {
+  transform: translateY(-2px);
+  box-shadow: none;
+  background-color: #000000;
+}
+.social-icons a:hover::before {
+  opacity: 1;
+}
+.social-icons a:hover i {
+  color: #FFB800 !important;
+}
+.dev-icons {
+  font-size: 3rem;
+}
+.dev-icons .list-inline-item i:hover {
+  color: #1a1a1a;
+}
+#sideNav .navbar-nav .nav-item .nav-link {
+  font-weight: 800;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  color: #FFB800;
+  transition: all 0.3s ease;
+  position: relative;
+}
+#sideNav .navbar-nav .nav-item .nav-link:hover {
+  color: #FFC93C;
+}
+#sideNav .navbar-nav .nav-item .nav-link.active {
+  color: #ffffff;
+  font-weight: 900;
+}
+#sideNav .navbar-nav .nav-item .nav-link.active::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 70%;
+  background-color: #FFB800;
+}
+#sideNav .navbar-toggler:focus {
+  outline-color: #FFB800;
+}
+@media (min-width: 992px) {
+  #sideNav {
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 17rem;
+    height: 100vh;
+    background-color: #000000 !important;
+    border-right: 2px solid #FFB800;
+  }
+  #sideNav .navbar-brand {
+    display: flex;
+    margin: auto auto 0;
+    padding: 0.5rem;
+  }
+  #sideNav .navbar-brand .img-profile {
+    max-width: 10rem;
+    max-height: 10rem;
+    border: 0.3rem solid #FFB800;
+  }
+  #sideNav .navbar-collapse {
+    display: flex;
+    align-items: flex-start;
+    flex-grow: 0;
+    width: 100%;
+    margin-bottom: auto;
+  }
+  #sideNav .navbar-collapse .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+  #sideNav .navbar-collapse .navbar-nav .nav-item {
+    display: block;
+  }
+  #sideNav .navbar-collapse .navbar-nav .nav-item .nav-link {
+    display: block;
+  }
+}
+section.resume-section {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+  max-width: 75rem;
+  background-color: #0a0a0a;
+}
+section.resume-section .resume-item .resume-date {
+  min-width: none;
+}
+@media (min-width: 768px) {
+  section.resume-section {
+    min-height: 100vh;
+  }
+  section.resume-section .resume-item .resume-date {
+    min-width: 18rem;
+  }
+}
+@media (min-width: 992px) {
+  section.resume-section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+}
+.bg-primary {
+  background-color: #000000 !important;
+}
+.text-primary {
+  color: #FFB800 !important;
+}
+a {
+  color: #FFB800;
+}
+a:hover,
+a:focus,
+a:active {
+  color: #FFC93C;
+}
+.fa-trophy,
+.fa-book,
+.fa-microphone-alt,
+.fa-angle-right {
+  color: #FFB800 !important;
+}
+
+div.gallery {
+  border: 1px solid #ccc;
+  float: left;
+  width: 180px;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+.content-container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.project-card {
+  background-color: #000000;
+  border: 1px solid #FFB800;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  width: calc(50% - 1rem);
+  min-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 184, 0, 0.15);
+}
+
+.project-image {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(45deg, #000000, #1a1a1a);
+}
+
+.project-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.8));
+  pointer-events: none;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1.5rem;
+  transition: all 0.4s ease;
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.03);
+}
+
+.project-info {
+  padding: 2rem;
+  border-top: 1px solid rgba(255, 184, 0, 0.2);
+}
+
+.project-info h4 {
+  color: #FFB800;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.project-info p {
+  color: #a8b2c1;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.project-links {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 184, 0, 0.1);
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #FFB800;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.project-link:hover {
+  color: #FFC93C;
+  text-decoration: none;
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .project-card {
+    width: 100%;
+  }
+}
+
+.social-icons {
+  text-align: center;
+}
+.social-icons a {
+  margin: 0;
+  margin-right: 2rem;
+  padding: 0;
+}
+.social-icons div {
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .content-container {
+    display: inline;
+  }
+
+  .content-item {
+    width: 100%;
+    padding: 0.75rem 0.7rem;
+  }
+  #awards ul img {
+    max-width: 100%;
+  }
+  .social-icons div {
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem;
+  }
+  .social-icons a {
+    margin: 0;
+
+    padding: 0;
+  }
+}
+@media (min-width: 512px) {
+  .social-icons div {
+    display: inline-block;
+    margin: 0;
+  }
+  .social-icons a {
+    margin: 0.25rem;
+    padding: 0;
+  }
+}
+
+.resume-content h3 {
+  color: #e0e0e0;
+}
+
+.resume-content .subheading {
+  color: #FFB800;
+}
+
+.resume-content p {
+  color: #a8b2c1;
+}
+
+.resume-date .text-primary {
+  color: #FFB800 !important;
+}
+
+.list-inline-item {
+  color: #a8b2c1;
+}
+
+.alert {
+  background-color: #000000;
+  border: 1px solid #FFB800;
+  color: #e0e0e0;
+}
+
+.alert-warning {
+  background-color: #000000;
+  border: 1px solid #FFB800;
+}
+
+.alert-dark {
+  background-color: #000000;
+  border: 1px solid #FFB800;
+}
