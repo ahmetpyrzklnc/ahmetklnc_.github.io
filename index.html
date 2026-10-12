@@ -1,425 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ahmet KILINÇ | Data Engineer</title>
+  <meta name="description" content="Ahmet Kılınç — Data Engineer building large-scale data pipelines, knowledge graphs and RAG-ready datasets.">
+  <meta name="author" content="Ahmet KILINÇ">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0a0c12;
+      --bg2: #10131c;
+      --surface: rgba(255,255,255,.04);
+      --surface-hi: rgba(255,255,255,.07);
+      --text: #eef0f6;
+      --muted: #98a2b8;
+      --line: rgba(255,255,255,.09);
+      --amber: #5eead4;
+      --cyan: #7dd3fc;
+      --violet: #818cf8;
+      --grad: linear-gradient(100deg, #5eead4, #7dd3fc);
+      --glow: 0 0 0 1px var(--line), 0 20px 50px -20px rgba(0,0,0,.7);
+    }
+    :root[data-theme="light"] {
+      --bg: #f7f8fb;
+      --bg2: #eceef5;
+      --surface: rgba(10,12,18,.04);
+      --surface-hi: rgba(10,12,18,.07);
+      --text: #12151c;
+      --muted: #566078;
+      --line: rgba(10,12,18,.11);
+      --amber: #0f8f82;
+      --cyan: #0369a1;
+      --violet: #4f46e5;
+      --grad: linear-gradient(100deg, #0f8f82, #0369a1);
+      --glow: 0 0 0 1px var(--line), 0 20px 50px -25px rgba(20,25,50,.25);
+    }
 
-  <head>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif; line-height: 1.65;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 1.25rem; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Ahmet KILINÇ | AI Developer">
-    
+    /* Ambient background */
+    .ambient { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .ambient i { position: absolute; border-radius: 50%; filter: blur(120px); opacity: .18; }
+    .ambient i:nth-child(1) { width: 520px; height: 520px; background: var(--violet); top: -160px; left: -120px; }
+    .ambient i:nth-child(2) { width: 460px; height: 460px; background: var(--amber); top: 30%; right: -160px; opacity: .12; }
+    .ambient i:nth-child(3) { width: 420px; height: 420px; background: var(--cyan); bottom: -160px; left: 20%; opacity: .1; }
+    .ambient::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(var(--line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse at 50% 20%, #000 20%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 20%, #000 20%, transparent 75%);
+    }
 
-    <title>Ahmet KILINÇ | AI Developer</title>
+    /* Top bar */
+    .topbar {
+      position: sticky; top: .75rem; z-index: 20; margin: .75rem auto 0; max-width: 760px; width: calc(100% - 1.5rem);
+      background: color-mix(in srgb, var(--bg2) 70%, transparent);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--line); border-radius: 999px;
+      display: flex; align-items: center; justify-content: space-between; padding: .45rem .55rem .45rem 1.1rem;
+    }
+    .brand { font-weight: 800; text-decoration: none; letter-spacing: .03em; font-size: .95rem; }
+    .nav { display: flex; align-items: center; gap: .3rem; }
+    .nav a { text-decoration: none; color: var(--muted); font-size: .88rem; font-weight: 500; padding: .35rem .8rem; border-radius: 999px; }
+    .nav a:hover { color: var(--text); background: var(--surface-hi); }
+    .theme-btn { border: 0; background: var(--surface-hi); color: var(--text); width: 2rem; height: 2rem; border-radius: 50%; cursor: pointer; }
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    /* Hero */
+    .hero { padding: 5rem 0 3.5rem; display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .55rem; padding: .3rem .85rem; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--surface); font-size: .82rem; color: var(--muted);
+    }
+    .dot { width: .5rem; height: .5rem; border-radius: 50%; background: #34d399; box-shadow: 0 0 0 0 rgba(52,211,153,.6); animation: pulse 2s infinite; }
+    @keyframes pulse { 70% { box-shadow: 0 0 0 9px rgba(52,211,153,0); } 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); } }
+    .hero h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); line-height: 1.02; letter-spacing: -.03em; margin: 1.1rem 0 1rem; font-weight: 800; }
+    .hero p.lead { color: var(--muted); font-size: 1.15rem; max-width: 34rem; margin: 0 0 1.6rem; }
+    .typed { color: var(--cyan); }
+    .caret { display: inline-block; width: .55ch; background: var(--cyan); margin-left: 2px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .cta { display: flex; flex-wrap: wrap; gap: .7rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .55rem; padding: .7rem 1.25rem; border-radius: 12px;
+      text-decoration: none; font-weight: 600; font-size: .95rem; border: 1px solid var(--line); background: var(--surface);
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: var(--amber); }
+    .btn.primary { background: var(--grad); color: #04201c; border-color: transparent; }
+    .btn.primary:hover { filter: brightness(1.08); }
 
-    <!-- Custom fonts for this template -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet">
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    .portrait { position: relative; justify-self: center; }
+    .portrait::before {
+      content: ""; position: absolute; inset: -10px; border-radius: 50%; background: var(--grad); filter: blur(22px); opacity: .5;
+      animation: spin 9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .portrait img {
+      position: relative; width: min(280px, 62vw); aspect-ratio: 1; object-fit: cover; border-radius: 50%;
+      border: 4px solid var(--bg); box-shadow: 0 0 0 2px var(--amber);
+    }
+    .tag {
+      position: absolute; padding: .35rem .75rem; font-size: .78rem; border-radius: 10px; background: var(--bg2);
+      border: 1px solid var(--line); box-shadow: var(--glow); white-space: nowrap; animation: float 5s ease-in-out infinite;
+    }
+    .tag.t1 { top: 6%; left: -14%; } .tag.t2 { bottom: 18%; right: -16%; animation-delay: 1.5s; } .tag.t3 { bottom: -2%; left: 4%; animation-delay: 3s; }
+    @keyframes float { 50% { transform: translateY(-8px); } }
 
-    <!-- Custom styles for this template -->
-    <link href="css/resume.min.css" rel="stylesheet">
-    
-    <style>
-      /* Custom spacing styles */
-      .nav-item {
-        margin-bottom: 1.5rem;
-      }
-      
-      .resume-section {
-        padding-top: 6rem !important;
-        padding-bottom: 6rem !important;
-      }
-      
-      .mb-5 {
-        margin-bottom: 3rem !important;
-      }
-      
-      .resume-item {
-        margin-bottom: 4rem !important;
-      }
-      
-      .fa-ul > li {
-        margin-bottom: 1.2rem;
-      }
-      
-      .content-item {
-        margin-bottom: 3rem;
-      }
-      
-      .subheading {
-        margin-bottom: 2rem !important;
-      }
-      
-      .lead {
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-      }
-    </style>
+    /* Pipeline visual */
+    .pipeline { margin: 0 0 1rem; padding: 1.4rem 1.2rem; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--glow); }
+    .pipeline small { display: block; color: var(--muted); margin-bottom: 1rem; }
+    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; align-items: center; }
+    .node { text-align: center; position: relative; padding: .4rem; }
+    .node i { display: grid; place-items: center; width: 3rem; height: 3rem; margin: 0 auto .5rem; border-radius: 14px; background: var(--bg2); border: 1px solid var(--line); color: var(--amber); font-size: 1.15rem; }
+    .node:nth-child(even) i { color: var(--cyan); }
+    .node b { display: block; font-size: .86rem; }
+    .node span { display: block; font-size: .72rem; color: var(--muted); }
+    .node:not(:last-child)::after {
+      content: ""; position: absolute; top: 1.9rem; left: calc(50% + 1.8rem); width: calc(100% - 3.6rem); height: 2px;
+      background: repeating-linear-gradient(90deg, var(--muted) 0 5px, transparent 5px 10px); opacity: .45;
+    }
+    .node:not(:last-child)::before {
+      content: ""; position: absolute; top: calc(1.9rem - 3px); left: calc(50% + 1.8rem); width: 8px; height: 8px; border-radius: 50%;
+      background: var(--amber); box-shadow: 0 0 8px var(--amber); animation: travel 2.6s linear infinite; z-index: 1;
+    }
+    .node:nth-child(2)::before { animation-delay: .4s; } .node:nth-child(3)::before { animation-delay: .8s; } .node:nth-child(4)::before { animation-delay: 1.2s; }
+    @keyframes travel { 0% { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(calc((100vw - 2.5rem) / 5 - 3.6rem)); opacity: 0; } }
 
-  </head>
-  
+    /* Sections */
+    section { padding: 3rem 0; }
+    .sec-head { display: flex; align-items: baseline; gap: .8rem; margin-bottom: 2rem; }
+    .sec-head .num { color: var(--amber); font-size: .9rem; }
+    h2 { font-size: clamp(1.7rem, 4vw, 2.2rem); letter-spacing: -.02em; margin: 0; }
+    .sec-head::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); margin-left: .6rem; }
 
-  <body id="page-top">
+    /* Timeline */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before { content: ""; position: absolute; left: .45rem; top: .4rem; bottom: .4rem; width: 2px; background: linear-gradient(var(--amber), transparent); opacity: .6; }
+    .item { position: relative; margin-bottom: 1.5rem; padding: 1.5rem 1.6rem; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--glow); transition: transform .25s, border-color .25s; }
+    .item:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--amber) 55%, var(--line)); }
+    .item::before {
+      content: ""; position: absolute; left: -2rem; top: 1.9rem; width: .95rem; height: .95rem; border-radius: 50%;
+      background: var(--bg); border: 3px solid var(--amber); box-shadow: 0 0 10px color-mix(in srgb, var(--amber) 70%, transparent);
+    }
+    .item.current { background: linear-gradient(160deg, color-mix(in srgb, var(--amber) 11%, var(--surface)), var(--surface) 55%); border-color: color-mix(in srgb, var(--amber) 45%, var(--line)); }
+    .item-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1rem; }
+    .item h3 { margin: 0; font-size: 1.2rem; letter-spacing: -.01em; }
+    .company { font-weight: 600; margin-top: .1rem; }
+    .meta { color: var(--muted); font-size: .88rem; }
+    .date { font-size: .8rem; color: var(--cyan); padding: .25rem .7rem; border: 1px solid var(--line); border-radius: 999px; align-self: flex-start; white-space: nowrap; background: var(--bg2); }
+    .badge { margin-left: .5rem; padding: .08rem .55rem; border-radius: 999px; font-size: .68rem; font-weight: 700; letter-spacing: .06em; background: #34d39926; color: #34d399; vertical-align: .15rem; }
+    .item ul { margin: 1rem 0 0; padding: 0; list-style: none; }
+    .item li { position: relative; padding-left: 1.4rem; margin-bottom: .55rem; color: color-mix(in srgb, var(--text) 88%, var(--muted)); }
+    .item li::before { content: "\25B8"; position: absolute; left: 0; color: var(--amber); }
+    .note { margin: 1rem 0 0; font-size: .78rem; color: var(--muted); }
+    .tech { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tech span { font-size: .76rem; padding: .18rem .65rem; border-radius: 8px; background: var(--bg2); border: 1px solid var(--line); color: var(--muted); font-family: 'JetBrains Mono', monospace; }
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-      
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">
-        <span class="d-block d-lg-none">AHMET KILINÇ</span>
-        <span class="d-none d-lg-block">
-          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/profile_photos.png" alt="">
-        </span>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about" id="nav-main">Main</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#experience" id="nav-experience">Experience</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#education" id="nav-education">Education</a>
-          </li>
-         <!--   
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#skills">Skills</a>
-          </li>
-tama
-         -->
-<!-- 
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#cours">Certifications &amp; Courses</a>
-          </li> -->
-        </ul>
-      </div>
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; }
+    .skill { padding: 1.4rem; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--glow); }
+    .skill i.ic { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 12px; background: var(--bg2); color: var(--amber); margin-bottom: .9rem; border: 1px solid var(--line); }
+    .skill:nth-child(2) i.ic { color: var(--cyan); } .skill:nth-child(3) i.ic { color: var(--violet); }
+    .skill h3 { margin: 0 0 .7rem; font-size: 1.05rem; }
+
+    /* Projects */
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.25rem; }
+    .project { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--surface); box-shadow: var(--glow); display: flex; flex-direction: column; transition: transform .25s, border-color .25s; }
+    .project:hover { transform: translateY(-5px); border-color: var(--amber); }
+    .project .img { height: 190px; overflow: hidden; background: var(--bg2); }
+    .project img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .project:hover img { transform: scale(1.06); }
+    .project .body { padding: 1.2rem 1.4rem 1.4rem; display: flex; flex-direction: column; flex: 1; }
+    .project h3 { margin: 0 0 .4rem; font-size: 1.08rem; }
+    .project p { margin: 0 0 1.1rem; color: var(--muted); font-size: .93rem; flex: 1; }
+    .project .btn { align-self: flex-start; padding: .45rem .95rem; font-size: .85rem; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--line); margin-top: 2rem; padding: 3rem 0; text-align: center; }
+    footer h2 { margin-bottom: .6rem; }
+    footer p { color: var(--muted); margin: 0 0 1.4rem; }
+    .social { display: flex; justify-content: center; gap: .7rem; margin-top: 1.8rem; }
+    .social a { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); transition: .2s; }
+    .social a:hover { color: var(--amber); border-color: var(--amber); transform: translateY(-3px); }
+    .copy { color: var(--muted); font-size: .8rem; margin-top: 1.6rem; }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding-top: 3rem; gap: 2.2rem; }
+      .hero p.lead { margin-inline: auto; }
+      .cta { justify-content: center; }
+      .portrait { order: -1; }
+      .tag { display: none; }
+      .nav a { padding: .35rem .55rem; }
+      .node span { display: none; }
+      .node:not(:last-child)::before { display: none; }
+    }
+    @media (max-width: 520px) {
+      .timeline { padding-left: 1.4rem; }
+      .item::before { left: -1.4rem; }
+      .timeline::before { left: -.05rem; }
+      .item { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient"><i></i><i></i><i></i></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top">AHMET <span class="grad-text">KILINÇ</span></a>
+    <nav class="nav">
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
     </nav>
+  </header>
 
-    <div class="container-fluid p-0">
+  <main class="wrap" id="top">
 
-      <section class="resume-section p-3 p-lg-5 d-flex d-column" id="about">
-        <div class="my-auto">
-          <h1 class="mb-0">AHMET 
-            <span class="text-primary">KILINÇ</span>
-          </h1>
-          <div class="subheading mb-5">
-            <p id="about-title">
-            Software Developer <br>
-            AI Researcher & Developer
-            </p>
-            <a href="mailto:ahmetklnc.dev@gmail.com">ahmetklnc.dev@gmail.com</a>
-          </div>
-
-        <div class="content-container">
-          <div class="content-item project-card">
-            <div class="project-image">
-              <img src="img/llama_image.png" alt="Llama 3.1 Fine-Tuning">
-            </div>
-            <div class="project-info">
-              <h4 id="project1-title">Llama 3.1 Fine-Tuning</h4>
-              <p id="project1-desc">I performed a fine-tuning process on Meta's Llama 3.1 LLM model using a custom dataset I prepared, optimizing the model's performance and accuracy in the areas I targeted.</p>
-              <div class="project-links">
-                <a href="https://github.com/ahmetpyrzklnc/Llama-3.1-8B-fineTuning" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-              </div>
-            </div>
-          </div>
-          <div class="content-item project-card">
-            <div class="project-image">
-              <img src="img/medium.png" alt="Medium Article">
-            </div>
-            <div class="project-info">
-              <h4 id="project2-title">Llama 3.1 Fine-Tuning Medium Article</h4>
-              <p id="project2-desc">I prepared a step-by-step guide on the fine-tuning process of Meta's Llama 3.1 model, detailing how the process works, the challenges encountered, and the methods I applied, and shared it on the Medium platform.</p>
-              <div class="project-links">
-                <a href="https://medium.com/@ahmetklnc/llama-3-1-8byi-fine-tune-etmek-ad%C4%B1m-ad%C4%B1m-k%C4%B1lavuz-3fdc532e5fef" class="project-link"><i class="fab fa-medium-m"></i> Medium</a>
-              </div>
-            </div>
-          </div>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Data Engineer @ Apilex</span>
+        <h1>Raw data in.<br><span class="grad-text">AI-ready knowledge</span> out.</h1>
+        <p class="lead">I build pipelines that turn tens of millions of records from sources across many countries into clean data, knowledge graphs and RAG-ready datasets.</p>
+        <p class="mono" style="margin:0 0 1.6rem;font-size:.95rem;">&gt; <span class="typed" id="typed"></span><span class="caret">&nbsp;</span></p>
+        <div class="cta">
+          <a class="btn primary" href="mailto:ahmetklnc.dev@gmail.com"><i class="fa-solid fa-envelope"></i> Get in touch</a>
+          <a class="btn" href="https://www.linkedin.com/in/ahmetklnc/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+          <a class="btn" href="https://github.com/ahmetpyrzklnc" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
         </div>
-
-
-          <p class="lead mb-5" id="welcome-text">  <br> Welcome. This space carries traces of my thoughts and stories. Through my blog and social media, you can get to know me a little better.<br>
-          </p>
-
-          <div class="social-icons">
-            <div>
-            <a href="https://www.youtube.com/@AlternativeCode" target="_blank">
-                <i class="fab fa-youtube"></i>
-            </a>
-            <a href="https://www.instagram.com/ahmtklnc_" target="_blank">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://github.com/ahmetpyrzklnc" target="_blank">
-              <i class="fab fa-github"></i>
-            </a>
-          </div>
-          <div>
-            <a href="https://www.linkedin.com/in/ahmetklnc/" target="_blank">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="https://medium.com/@ahmetklnc" target="_blank">
-              <i class="fab fa-medium-m"></i>
-            </a>
-          </div>
-          </div>
-          
-        </div>
-      </section>
-      <hr class="m-0">
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
-        <div class="my-auto">
-          <h2 class="mb-5" id="experience-title">Experience</h2>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0" id="exp1-position">GENERATIVE AI DEVELOPER & AI PROJECT MANAGER</h3>
-              <div class="subheading mb-3" id="exp1-company">TARVINA YAZILIM TEKNOLOJİ</div>
-              <p id="exp1-location">Konya, Turkey - Remote</p>
-              <ul class="fa-ul mb-0">
-                <li id="exp1-desc1">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Led the design and development of photo-realistic body transformation simulation systems using SDXL.
-                </li>
-                <li id="exp1-desc2">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Built custom datasets and implemented data distillation pipelines to train LoRA models from scratch.
-                </li>
-                <li id="exp1-desc3">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Managed multimodal AI projects integrating ControlNet, OpenPose, and LLM-driven prompt engineering.
-                </li>
-                <li id="exp1-desc4">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Coordinated a cross-functional AI team, handled project planning, task assignments, and delivery tracking as a PM.
-                </li>
-                <li id="exp1-desc5">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Used cloud platforms (Lightning AI, RunPod) for model training, versioning, and infrastructure setup.
-                </li>
-              </ul>
-              <p class="mt-3" id="exp1-tech">
-                Technologies Used: Python, PyTorch, SDXL, LoRA, ControlNet, ComfyUI, Lightning AI, RunPod, Hugging Face and other skills
-              </p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary" id="exp1-date">May 2025 - July 2025</span>
-            </div>
-          </div>
-          
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0" id="exp2-position">AI SOFTWARE DEVELOPER & PM INTERN</h3>
-              <div class="subheading mb-3" id="exp2-company">TARVINA YAZILIM TEKNOLOJİ</div>
-              <p id="exp2-location">Konya, Turkey - Remote</p>
-              <ul class="fa-ul mb-0">
-                <li id="exp2-desc1">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    AI Model Development - Designed, developed, and optimized AI systems, including computer vision models such as VTON.
-                </li>
-                <li id="exp2-desc2">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Cloud Computing & Integration - Worked on cloud-based architectures, optimizing data storage, processing, and model deployment.
-                </li>
-                <li id="exp2-desc3">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Data Processing and Integration - Developed efficient pipelines for handling and integrating large-scale data across systems.
-                </li>
-                <li id="exp2-desc4">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Project Management - Led and coordinated projects, managing tasks, setting milestones, and ensuring timely delivery.
-                </li>
-                <li id="exp2-desc5">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    System Optimization & Data Visualization - Improved system performance and enhanced data visualization techniques for better insights.
-                </li>
-                <li id="exp2-desc6">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Continuous Learning & AI Research - Explored artificial intelligence, deep learning, and LLM fine-tuning while staying updated on emerging technologies.
-                </li>
-            </ul>
-            <p class="mt-3" id="exp2-tech">Technologies Used: Python, TensorFlow, OpenCV, Docker, AWS, Google Cloud and other skills</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary" id="exp2-date">Jan 2025 - May 2025</span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0" id="exp3-position">SOFTWARE DEVELOPER INTERN</h3>
-              <div class="subheading mb-3" id="exp3-company">ATİKER YAZILIM VERİ İŞLEM A.Ş.</div>
-              <p id="exp3-location">Konya, Turkey</p>
-              <ul class="fa-ul mb-0">
-                <li id="exp3-desc1">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  REST API Development - Designed, developed, and tested REST APIs effectively utilizing HTTP methods.
-                </li>
-                <li id="exp3-desc2">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Data Processing and Integration - Performed JSON-based data processing and API integrations.
-                </li>
-                <li id="exp3-desc3">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  ERP and Mobile Reporting - Developed mobile reporting modules for ERP systems with user-friendly designs.
-                </li>
-                <li id="exp3-desc4">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Mobile Application Design - Designed mobile app interfaces to optimize data entry and visualization processes.
-                </li>
-                <li id="exp3-desc5">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Team Collaboration - Collaborated with the team to deliver projects on time.
-                </li>
-                <li id="exp3-desc6">
-                  <i class="fa-li fa fa-angle-right text-warning"></i>
-                  Self-Development - Explored artificial intelligence and language models to learn new technologies.
-                </li>
-              </ul>
-              <p class="mt-3" id="exp3-tech">Technologies Used: Python, Software Development, and other skills</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary" id="exp3-date">September 2024 - January 2025</span>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-      
-      <hr class="m-0">
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
-        <div class="my-auto">
-          <h2 class="mb-5" id="education-title">Education</h2>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0" id="edu1-school">Necmettin Erbakan University</h3>
-              <div class="subheading mb-3" id="edu1-faculty">Faculty of Applied Sciences, Necmettin Erbakan University, Konya</div>
-              <div id="edu1-degree">Management Information Systems - Bachelor's Degree</div>
-              <p class="mt-3">
-                <ul class="fa-ul mb-0">
-                  <li id="edu1-desc1">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Specialized in problem-solving and analytical thinking, developing skills in machine learning, data science, and artificial intelligence through hands-on projects.
-                  </li>
-                  <li id="edu1-desc2">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Completed comprehensive coursework in Web Programming, including front-end and back-end development using modern frameworks and technologies.
-                  </li>
-                  <li id="edu1-desc3">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Gained expertise in 3D Modeling and Computer Graphics, working on various visualization projects and simulations.
-                  </li>
-                  <li id="edu1-desc4">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Developed strong foundation in Artificial Intelligence and Machine Learning, focusing on computer vision and deep learning applications.
-                  </li>
-                  <li id="edu1-desc5">
-                    <i class="fa-li fa fa-angle-right text-warning"></i>
-                    Enhanced practical skills through project-based learning in database management, system analysis, and business intelligence.
-                  </li>
-                </ul>
-              </p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary" id="edu1-date">2021 - 2025</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      <hr class="m-0">
-
-      <!-- Certifications & Courses Section -->
-      <!--
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="cours">
-        <div class="my-auto">
-          <h2 class="mb-5">Certifications &amp; Courses</h2>
-          <ul class="fa-ul mb-0">
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2023, Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2022, Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2022, Ut enim ad minim veniam, quis nostrud exercitation ullamco</li>
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2021, Duis aute irure dolor in reprehenderit in voluptate velit</li>
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2021, Excepteur sint occaecat cupidatat non proident</li>
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2020, Sunt in culpa qui officia deserunt mollit anim id est laborum</li>
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2020, Nemo enim ipsam voluptatem quia voluptas sit aspernatur</li>
-            <li>
-              <i class="fa-li fa fa-book text-warning"></i>
-              2019, Quis autem vel eum iure reprehenderit qui in ea voluptate</li>
-          </ul>    
-        </div>
-      </section>
-      -->
+      </div>
+      <div class="portrait">
+        <img src="img/profile_photos.png" alt="Ahmet Kılınç">
+        <span class="tag mono t1">Airflow</span>
+        <span class="tag mono t2">PostgreSQL</span>
+        <span class="tag mono t3">RAG</span>
+      </div>
     </div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <div class="pipeline reveal">
+      <small class="mono">// what I build: scheduled, deduplicated, logged</small>
+      <div class="flow">
+        <div class="node"><i class="fa-solid fa-globe"></i><b>Sources</b><span>many countries</span></div>
+        <div class="node"><i class="fa-solid fa-filter"></i><b>Clean</b><span>parse &amp; verify</span></div>
+        <div class="node"><i class="fa-solid fa-clone"></i><b>Dedup</b><span>daily · weekly · monthly</span></div>
+        <div class="node"><i class="fa-solid fa-database"></i><b>PostgreSQL</b><span>logged loads</span></div>
+        <div class="node"><i class="fa-solid fa-diagram-project"></i><b>Graph &amp; RAG</b><span>AI-ready</span></div>
+      </div>
+    </div>
 
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <section id="experience">
+      <div class="sec-head reveal"><span class="num mono">01</span><h2>Experience</h2></div>
+      <div class="timeline">
 
-    <!-- Custom scripts for this template -->
-    <script src="js/resume.min.js"></script>
-    <script src="js/translations.js"></script>
+        <article class="item current reveal">
+          <div class="item-top">
+            <div>
+              <h3>Data Engineer <span class="badge">CURRENT</span></h3>
+              <div class="company">Apilex</div>
+              <div class="meta">Istanbul, Turkey · Remote</div>
+            </div>
+            <span class="date mono">Jan 2026 – Present</span>
+          </div>
+          <ul>
+            <li>Collected and processed data from primary sources across many countries, turning raw records into clean, structured data for AI and RAG.</li>
+            <li>Built an automation layer that runs on daily, weekly and monthly schedules: it ingests from primary sources, deduplicates, loads into PostgreSQL and logs every run.</li>
+            <li>Designed a knowledge graph that models documents down to their sub-sections and tracks version history and effective dates.</li>
+            <li>Added verification checks that compare outputs against the source texts and catch OCR and parsing errors before publishing.</li>
+          </ul>
+          <p class="note mono">Scale: ~50M Brazilian and ~12M Turkish records, plus datasets from multiple other countries.</p>
+          <div class="tech"><span>Python</span><span>Apache Airflow</span><span>PostgreSQL</span><span>Milvus</span><span>Docker</span><span>Google Cloud</span></div>
+        </article>
 
-    <style>
-    #languageSwitch {
-      color: #ffc107 !important;
-      background: #181818 !important;
-      border: 2px solid #ffc107 !important;
-      border-radius: 2rem !important;
-      font-weight: bold;
-      font-size: 1.1rem;
-      outline: none !important;
-      cursor: pointer;
-      padding: 0.2rem 1.2rem !important;
-      transition: color 0.2s, background 0.2s, border-color 0.2s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    #languageSwitch i {
-      color: #ffc107 !important;
-      font-size: 1.2em;
-      transition: color 0.2s;
-    }
-    #languageSwitch:hover {
-      color: #181818 !important;
-      border-color: #ffc107 !important;
-      background: #ffc107 !important;
-      text-decoration: none !important;
-    }
-    #languageSwitch:hover i {
-      color: #181818 !important;
-    }
-    </style>
+        <article class="item reveal">
+          <div class="item-top">
+            <div>
+              <h3>Generative AI Developer &amp; AI Project Manager</h3>
+              <div class="company">Tarvina Yazılım Teknoloji</div>
+              <div class="meta">Konya, Turkey · Remote</div>
+            </div>
+            <span class="date mono">May 2025 – Jul 2025</span>
+          </div>
+          <ul>
+            <li>Led the design and development of photo-realistic body transformation simulation systems using SDXL.</li>
+            <li>Built custom datasets and implemented data distillation pipelines to train LoRA models from scratch.</li>
+            <li>Managed multimodal AI projects integrating ControlNet, OpenPose and LLM-driven prompt engineering.</li>
+            <li>Coordinated a cross-functional AI team and handled project planning, task assignments and delivery tracking as a PM.</li>
+            <li>Used cloud platforms (Lightning AI, RunPod) for model training, versioning and infrastructure setup.</li>
+          </ul>
+          <div class="tech"><span>Python</span><span>PyTorch</span><span>SDXL</span><span>LoRA</span><span>ControlNet</span><span>ComfyUI</span><span>Lightning AI</span><span>RunPod</span><span>Hugging Face</span></div>
+        </article>
 
-  </body>
+        <article class="item reveal">
+          <div class="item-top">
+            <div>
+              <h3>AI Software Developer &amp; PM Intern</h3>
+              <div class="company">Tarvina Yazılım Teknoloji</div>
+              <div class="meta">Konya, Turkey · Remote</div>
+            </div>
+            <span class="date mono">Jan 2025 – May 2025</span>
+          </div>
+          <ul>
+            <li><b>AI Model Development</b> – Designed, developed and optimized AI systems, including computer vision models such as VTON.</li>
+            <li><b>Cloud Computing &amp; Integration</b> – Worked on cloud-based architectures, optimizing data storage, processing and model deployment.</li>
+            <li><b>Data Processing and Integration</b> – Developed efficient pipelines for handling and integrating large-scale data across systems.</li>
+            <li><b>Project Management</b> – Led and coordinated projects, managing tasks, setting milestones and ensuring timely delivery.</li>
+            <li><b>System Optimization &amp; Data Visualization</b> – Improved system performance and data visualization for better insights.</li>
+            <li><b>Continuous Learning &amp; AI Research</b> – Explored AI, deep learning and LLM fine-tuning while staying current with emerging technologies.</li>
+          </ul>
+          <div class="tech"><span>Python</span><span>TensorFlow</span><span>OpenCV</span><span>Docker</span><span>AWS</span><span>Google Cloud</span></div>
+        </article>
 
+        <article class="item reveal">
+          <div class="item-top">
+            <div>
+              <h3>Software Developer Intern</h3>
+              <div class="company">Atiker Yazılım Veri İşlem A.Ş.</div>
+              <div class="meta">Konya, Turkey</div>
+            </div>
+            <span class="date mono">Sep 2024 – Jan 2025</span>
+          </div>
+          <ul>
+            <li><b>REST API Development</b> – Designed, developed and tested REST APIs using HTTP methods.</li>
+            <li><b>Data Processing and Integration</b> – Performed JSON-based data processing and API integrations.</li>
+            <li><b>ERP and Mobile Reporting</b> – Developed mobile reporting modules for ERP systems.</li>
+            <li><b>Mobile Application Design</b> – Designed mobile app interfaces to optimize data entry and visualization.</li>
+            <li><b>Team Collaboration</b> – Worked with the team to deliver projects on time.</li>
+            <li><b>Self-Development</b> – Explored AI and language models to learn new technologies.</li>
+          </ul>
+          <div class="tech"><span>Python</span><span>REST APIs</span><span>JSON</span></div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="sec-head reveal"><span class="num mono">02</span><h2>Skills</h2></div>
+      <div class="skills">
+        <div class="skill reveal">
+          <i class="ic fa-solid fa-gears"></i>
+          <h3>Data Engineering</h3>
+          <div class="tech"><span>Python</span><span>Apache Airflow</span><span>PostgreSQL</span><span>Deduplication</span><span>Docker</span><span>Google Cloud</span><span>AWS</span></div>
+        </div>
+        <div class="skill reveal">
+          <i class="ic fa-solid fa-diagram-project"></i>
+          <h3>Knowledge Graph &amp; RAG</h3>
+          <div class="tech"><span>RAG</span><span>Knowledge graphs</span><span>Milvus</span><span>LLM fine-tuning</span><span>Llama 3.1</span></div>
+        </div>
+        <div class="skill reveal">
+          <i class="ic fa-solid fa-wand-magic-sparkles"></i>
+          <h3>Generative AI &amp; Vision</h3>
+          <div class="tech"><span>PyTorch</span><span>TensorFlow</span><span>SDXL</span><span>LoRA</span><span>ControlNet</span><span>ComfyUI</span><span>OpenCV</span><span>Hugging Face</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="sec-head reveal"><span class="num mono">03</span><h2>Projects</h2></div>
+      <div class="projects">
+        <article class="project reveal">
+          <div class="img"><img src="img/llama_image.png" alt="Llama 3.1 Fine-Tuning"></div>
+          <div class="body">
+            <h3>Llama 3.1 Fine-Tuning</h3>
+            <p>Fine-tuned Meta's Llama 3.1 LLM on a custom dataset I prepared, optimizing the model's performance and accuracy in the areas I targeted.</p>
+            <a class="btn" href="https://github.com/ahmetpyrzklnc/Llama-3.1-8B-fineTuning" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          </div>
+        </article>
+        <article class="project reveal">
+          <div class="img"><img src="img/medium.png" alt="Medium article"></div>
+          <div class="body">
+            <h3>Llama 3.1 Fine-Tuning Medium Article</h3>
+            <p>A step-by-step guide to fine-tuning Llama 3.1: how the process works, the challenges I hit and the methods I applied.</p>
+            <a class="btn" href="https://medium.com/@ahmetklnc/llama-3-1-8byi-fine-tune-etmek-ad%C4%B1m-ad%C4%B1m-k%C4%B1lavuz-3fdc532e5fef" target="_blank" rel="noopener"><i class="fa-brands fa-medium"></i> Medium</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="sec-head reveal"><span class="num mono">04</span><h2>Education</h2></div>
+      <article class="item reveal" style="margin-left:0">
+        <style>#education .item::before { display: none; }</style>
+        <div class="item-top">
+          <div>
+            <h3>Necmettin Erbakan University</h3>
+            <div class="company">Management Information Systems – Bachelor's Degree</div>
+            <div class="meta">Faculty of Applied Sciences, Konya</div>
+          </div>
+          <span class="date mono">2021 – 2025</span>
+        </div>
+        <ul>
+          <li>Built problem-solving and analytical skills, with machine learning, data science and AI learned through hands-on projects.</li>
+          <li>Coursework in web programming, covering front-end and back-end development with modern frameworks.</li>
+          <li>3D modeling and computer graphics, applied to visualization projects and simulations.</li>
+          <li>Artificial intelligence and machine learning, focused on computer vision and deep learning.</li>
+          <li>Project-based learning in database management, system analysis and business intelligence.</li>
+        </ul>
+      </article>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <h2>Let's <span class="grad-text">talk data</span></h2>
+      <p>Open to Data Engineer and AI/RAG data roles.</p>
+      <a class="btn primary" href="mailto:ahmetklnc.dev@gmail.com"><i class="fa-solid fa-paper-plane"></i> ahmetklnc.dev@gmail.com</a>
+      <div class="social">
+        <a href="https://github.com/ahmetpyrzklnc" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/ahmetklnc/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://medium.com/@ahmetklnc" target="_blank" rel="noopener" aria-label="Medium"><i class="fa-brands fa-medium"></i></a>
+        <a href="https://www.youtube.com/@AlternativeCode" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.instagram.com/ahmtklnc_" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      </div>
+      <div class="copy">© Ahmet Kılınç</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Theme: dark by default
+      try { var saved = localStorage.getItem('theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+      document.getElementById('themeBtn').addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+
+      // Typed line
+      var phrases = ['ingest -> dedup -> postgres', 'build knowledge graphs', 'ship RAG-ready data'];
+      var el = document.getElementById('typed');
+      if (reduce) { el.textContent = phrases[0]; }
+      else {
+        var p = 0, c = 0, del = false;
+        (function tick() {
+          var s = phrases[p];
+          el.textContent = s.slice(0, c);
+          if (!del && c === s.length) { del = true; return setTimeout(tick, 1600); }
+          if (del && c === 0) { del = false; p = (p + 1) % phrases.length; }
+          c += del ? -1 : 1;
+          setTimeout(tick, del ? 28 : 55);
+        })();
+      }
+
+      // Reveal on scroll
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (e) { e.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        });
+      }, { threshold: .12 });
+      els.forEach(function (e) { io.observe(e); });
+    })();
+  </script>
+</body>
 </html>
